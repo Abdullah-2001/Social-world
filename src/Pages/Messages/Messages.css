@@ -1,0 +1,24 @@
+.chat-users {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.chat-users:hover {
+    background-color: red;
+}
+
+.message-container {
+    margin: 20px 0;
+}
+
+.sender {
+    background-color: blue;
+    color: white;
+}
+
+.receiver {
+    background-color: rgb(201, 201, 201);
+    color: black;
+}

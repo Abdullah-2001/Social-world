@@ -1,0 +1,108 @@
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.loader {
+    width: 70px;
+    height: 70px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+    position: relative;
+}
+
+.loader .square {
+    background-color: #000;
+}
+
+.home-content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+}
+
+.friends {
+    margin-top: 30px;
+    font-weight: 700;
+    color: rgb(174, 171, 171);
+}
+
+.friends-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.friends-container:hover {
+    box-shadow: 0 4px 8px 0 rgb(156 155 155 / 20%);
+}
+
+.friends-container :nth-child(1) {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.status {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    right: 195px;
+    top: 40px;
+}
+
+.online {
+    background-color: #17e146;
+}
+
+.offline {
+    background-color: red;
+}
+
+.open-modal {
+    width: 800px;
+    background-color: rgb(241, 241, 241);
+    height: 50px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.open-modal:hover {
+    background-color: rgb(226, 226, 226);
+}
+
+.open-modal p {
+    padding-left: 20px;
+    font-weight: 500;
+}
+
+.post-user-img,
+.friends-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #48964A;
+}
+
+.online {
+    background-color: #2F9A48;
+}
+
+.offline {
+    background-color: rgb(255, 68, 68);
+}

@@ -15,7 +15,7 @@ const ChatFooter = (userId) => {
       from: user1,
       to: user2,
       text,
-      createAt: serverTimestamp()
+      createdAt: serverTimestamp()
     })
     setText("")
   }

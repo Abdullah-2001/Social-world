@@ -9,7 +9,7 @@ export const getMessagesAsync = createAsyncThunk(
         const { user1, user2 } = body
         const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`
         const collectionRef = collection(firestore, "messages", id, "chat")
-        const q = query(collectionRef, orderBy("createAt", "asc"), limit(50))
+        const q = query(collectionRef, orderBy("createdAt", "asc"), limit(50))
         onSnapshot(q, (snapshot) => {
             dispatch(setMessages(snapshot.docs.map((doc) => doc.data())))
         })

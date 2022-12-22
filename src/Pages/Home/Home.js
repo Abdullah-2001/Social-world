@@ -11,12 +11,13 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import Sidebar from '../../Component/Sidebar/Sidebar';
 import Card from '../../Component/Card/Card';
 import Input from '../../Component/Input/Input';
-import Button from '../../Component/Button/Button';
-import CommentButton from '../../Assets/Svg/send.svg';
+// import Button from '../../Component/Button/Button';
+import Button from '@mui/material/Button';
 import moment from 'moment';
 import gsap from 'gsap';
 import './Home.css';
-import { getMessagesAsync } from '../../Store/Chat/AsyncChat';
+import { Delete, Edit, Send } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 
 const Home = () => {
 
@@ -67,6 +68,7 @@ const Home = () => {
         getDownloadURL(res.ref)
           .then((url) => {
             setImage(url)
+            alert("uploaded")
           })
       })
     setUploading(false)
@@ -75,7 +77,7 @@ const Home = () => {
   const createPost = async () => {
     setPosting(true)
     await addDoc(collection(firestore, "posts"), {
-      postId: auth.currentUser.uid,
+      postuid: auth.currentUser.uid,
       postedBy: state[0].firstName + " " + state[0].lastName,
       avatar: state[0].profileImage,
       postTitle,
@@ -88,14 +90,15 @@ const Home = () => {
   }
 
   const sendComment = async (post) => {
-    const { postId } = post
+    setComment("")
     await addDoc(collection(firestore, "comments"), {
-      commentOn: postId,
+      commentOn: post.postId,
       commentBy: state[0].firstName + " " + state[0].lastName,
       avatar: state[0].profileImage,
       comment,
       commentAt: serverTimestamp(),
     })
+    console.log("post =>", post);
   }
 
   useEffect(() => {
@@ -177,7 +180,16 @@ const Home = () => {
                         </div>
                       </div>
                       <div>
-                        {post.postId === auth.currentUser.uid && <Button title="Delete" className="delete-post" />}
+                        {post.postuid === auth.currentUser.uid && (
+                          <>
+                            <Tooltip title="Edit">
+                              <Edit color='success' sx={{ fontSize: 25 }} style={{ cursor: "pointer", margin: "0 5px" }} />
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                              <Delete color='error' sx={{ fontSize: 25 }} style={{ cursor: "pointer", margin: "0 5px" }} />
+                            </Tooltip>
+                          </>
+                        )}
                       </div>
                     </div>
                     <p style={{ fontSize: "20px", margin: "15px 0" }}>{post.postTitle}</p>
@@ -186,24 +198,22 @@ const Home = () => {
                     <div style={{ display: "flex", alignItems: "center", margin: "15px 0" }}>
                       <img className='post-user-img' src={state[0]?.profileImage} alt='' />
                       <Input value={comment} type="text" placeholder="Write a comment..." onChange={(e) => setComment(e.target.value)} className="comment-box" />
-                      <div onClick={() => sendComment(post)} style={{ cursor: "pointer", width: "40px", height: "40px", borderRadius: "100%", backgroundColor: "#48964A", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "10px" }}>
-                        <img src={CommentButton} alt="" style={{ width: "20px", height: "20px" }} />
-                      </div>
+                      <Button onClick={() => sendComment(post)} variant="contained" endIcon={<Send />}>
+                        Send
+                      </Button>
                     </div>
-                    {commentState?.map((comment) => {
-                      return (
-                        <>
-                          <div style={{ display: "flex", alignItems: "center", margin: "10px 0 0 0" }}>
-                            <img className='post-user-img' src={comment.avatar} alt='' />
-                            <div style={{ padding: "10px 15px", borderRadius: "10px", margin: "0 15px", width: "100%", height: "100%", backgroundColor: "#F0F2F5" }}>
-                              <p style={{ fontSize: "14px", fontWeight: "700" }}>{comment.commentBy}</p>
-                              <p>{comment.comment}</p>
-                            </div>
+                    {commentState?.map((comment) => post.postId === comment.commentOn &&
+                      <>
+                        <div style={{ display: "flex", alignItems: "center", margin: "10px 0 0 0" }}>
+                          <img className='post-user-img' src={comment.avatar} alt='' />
+                          <div style={{ padding: "10px 15px", borderRadius: "10px", margin: "0 15px", width: "100%", height: "100%", backgroundColor: "#F0F2F5" }}>
+                            <p style={{ fontSize: "14px", fontWeight: "700" }}>{comment.commentBy}</p>
+                            <p>{comment.comment}</p>
                           </div>
-                          <p style={{ fontSize: "10px", margin: "5px 80px 0 80px" }}>{moment(comment.commentAt?.toDate()).fromNow()}</p>
-                        </>
-                      )
-                    })}
+                        </div>
+                        <p style={{ fontSize: "10px", margin: "5px 80px 0 80px" }}>{moment(comment.commentAt?.toDate()).fromNow()}</p>
+                      </>
+                    )}
                     {/* {gifs.map((data) => {
                       return (
                         <div key={data.id} className="gif">

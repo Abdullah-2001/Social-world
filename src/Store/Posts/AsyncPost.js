@@ -10,7 +10,7 @@ export const getPostsAsync = createAsyncThunk(
         const collectionRef = collection(firestore, "posts")
         onSnapshot(collectionRef, (snapshot) => {
             dispatch(getPosts(snapshot.docs.map(doc => {
-                return { id: doc.id, ...doc.data() }
+                return { postId: doc.id, ...doc.data() }
             })))
             dispatch(setLoadPosts(false))
         })
